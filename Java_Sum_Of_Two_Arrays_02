@@ -1,0 +1,149 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int[] value = new int[2];
+
+
+        String input = scanner.nextLine();
+        String[] parts = input.split(" ");
+        int p = Integer.parseInt(parts[0]);
+        int k = Integer.parseInt(parts[1]);
+        //System.out.println(p + " " + k);
+
+        String line1 = scanner.nextLine();
+        String[] strAray1 = line1.split(" ");
+        int[] array1 = new int[p];
+        for (int i=0; i<p; i++) {
+            array1[i] = Integer.parseInt(strAray1[i]);
+        }
+
+        String line2 = scanner.nextLine();
+        String[] strAray2 = line2.split(" ");
+        int[] array2 = new int[k];
+        for (int i=0; i<k; i++) {
+            array2[i] = Integer.parseInt(strAray2[i]);
+        }
+        sum(array1, array2);
+    }
+    public static void sum(int[] first, int[] second){
+        int capacity = Math.max(first.length, second.length);
+        int[] arraySum = new int[capacity + 1];
+
+        int len2 = second.length;
+        int len1 = first.length;
+
+        if (len1 < len2) {
+            int lengthDiff = len2 - len1;
+
+            boolean needCarry = false;
+
+            for (int i = len1 - 1; i >= 0; i--) {
+                int sumPerPosition =0;
+
+                if (needCarry) {
+                    sumPerPosition = first[i] + second[i + lengthDiff] +1;
+                    needCarry = false;
+                }else
+                {
+                    sumPerPosition = first[i] + second[i + lengthDiff];
+                }
+
+                if (sumPerPosition > 9) {
+                    arraySum[i + lengthDiff + 1] = sumPerPosition % 10;
+                    needCarry = true;
+                }else
+                {
+                    arraySum[i + lengthDiff + 1] = sumPerPosition % 10;
+                }
+            }
+
+            for (int i = lengthDiff - 1; i >= 0; i--) {
+
+                if(needCarry){
+                    arraySum[i + 1] = second[i]+1;
+                }else
+                {
+                    arraySum[i + 1] = first[i] ;
+                }
+
+                if (arraySum[i + 1] > 9) {
+                    arraySum[i + 1] = arraySum[i + 1] % 10;
+                    needCarry = true;
+                } else {
+                    needCarry = false;
+                }
+
+
+            }
+
+            if (needCarry) {
+                arraySum[0] = 1;
+            } else {
+                arraySum[0] = 0;
+            }
+
+        } else {
+            int lengthDiff = len1 - len2;
+
+            boolean needCarry = false;
+
+            for (int i = len2 - 1; i >= 0; i--) {
+                int sumPerPosition = 0;
+
+
+                if (needCarry) {
+                    sumPerPosition = second[i] + first[i + lengthDiff] +1;
+                    needCarry = false;
+                }else
+                {
+                    sumPerPosition = second[i] + first[i + lengthDiff];
+                }
+
+                if (sumPerPosition > 9) {
+                    arraySum[i + lengthDiff + 1] = sumPerPosition % 10;
+                    needCarry = true;
+                }else
+                {
+                    arraySum[i + lengthDiff + 1] = sumPerPosition % 10;
+                }
+            }
+
+            for (int i = lengthDiff - 1; i >= 0; i--) {
+
+                if(needCarry){
+                    arraySum[i + 1] = first[i]+1;
+                }else
+                {
+                    arraySum[i + 1] = first[i] ;
+                }
+
+                if (arraySum[i + 1] > 9) {
+                    arraySum[i + 1] = arraySum[i + 1] % 10;
+                    needCarry = true;
+                } else {
+                    needCarry = false;
+                }
+
+            }
+
+            if (needCarry) {
+                arraySum[0] = 1;
+            } else {
+                arraySum[0] = 0;
+            }
+        }
+
+        if(arraySum[0] == 1)
+        {
+            System.out.print(1);
+        }
+        for (int i = 1; i < arraySum.length; i++) {
+
+            System.out.print(arraySum[i] + " ");
+        }
+    }
+}
+
